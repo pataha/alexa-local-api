@@ -10,7 +10,7 @@
     "8091/tcp": 8091
    },
   "options": {
-    "email": null,
+    "username": null,
     "password": null
   },
   "schema": {
