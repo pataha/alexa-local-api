@@ -11,7 +11,7 @@
    },
   "options": {
     "email": null,
-    "password": null,
+    "password": null
   },
   "schema": {
     "email": "email",
