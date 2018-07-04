@@ -2,7 +2,7 @@
   "name": "Alexa Meida Player API",
   "version": "0.1",
   "slug": "alexaapi",
-  "description": "API to communicate with alexa devices as media platyers",
+  "description": "API to communicate with alexa devices as media players",
   "url": "https://home-assistant.io/community",
   "startup": "once",
   "boot": "manual",
@@ -17,5 +17,5 @@
     "username": "str",
     "password": "str"
   },
-  "image": "keatontaylor/alexa-api"
+  "image": "keatontaylor/{arch}-addon-alexa-api"
 }
