@@ -14,7 +14,7 @@
     "password": null
   },
   "schema": {
-    "email": "email",
+    "username": "str",
     "password": "str"
   },
   "image": "keatontaylor/alexa-api"
