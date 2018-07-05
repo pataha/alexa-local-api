@@ -11,13 +11,11 @@
    },
   "options": {
     "username": null,
-    "password": null,
-    "url": null
+    "password": null
   },
   "schema": {
     "username": "str",
-    "password": "str",
-    "url": "str"
+    "password": "str"
   },
   "image": "keatontaylor/{arch}-addon-alexa-api"
 }
