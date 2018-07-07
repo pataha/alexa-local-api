@@ -146,6 +146,34 @@ var setTTS = function(message, deviceSerialNumber, config, callback) {
     })
 }
 
+var playSong = function(command, deviceSerialNumber, config, callback) {
+    var device = {}
+    config.devicesArray.devices.forEach(function(dev) {
+        if (dev.serialNumber === deviceSerialNumber){
+          device.deviceSerialNumber = dev.serialNumber
+          device.deviceType = dev.deviceType
+          device.deviceOwnerCustomerId = dev.deviceOwnerCustomerId
+        }
+    })
+    request({
+      method: 'POST',
+      url: 'https://pitangui.amazon.com/api/cloudplayer/queue-and-play?deviceSerialNumber=' +
+            device.deviceSerialNumber + '&deviceType=' + device.deviceType + '&mediaOwnerCustomerId=' +
+            device.device.deviceOwnerCustomerId,
+      headers: {
+        'Cookie': config.cookies,
+        'csrf': config.csrf
+      },
+      json: command
+    }, function(error, response, body) {
+      if(!error && response.statusCode === 200) {
+        callback(null, {"status": "success"})
+      } else {
+        callback(error, response)
+      }
+    })
+}
+
 var setMedia = function(command, deviceSerialNumber, config, callback) {
     var device = {}
     config.devicesArray.devices.forEach(function(dev) {
@@ -202,7 +230,7 @@ var getState = function(deviceSerialNumber, config, callback) {
     })
     request({
       method: 'GET',
-      url: 'https://pitangui.amazon.com/api/media/state?deviceSerialNumber=' + device.deviceSerialNumber + '&deviceType=' + device.deviceType,
+      url: config.alexaURL + '/api/np/player?deviceSerialNumber=' + device.deviceSerialNumber + '&deviceType=' + device.deviceType + '&screenWidth=2560',
       headers: {
         'Cookie': config.cookies,
         'csrf': config.csrf
@@ -223,3 +251,4 @@ exports.setTTS = setTTS
 exports.setMedia = setMedia
 exports.getDevices = getDevices
 exports.getState = getState
+exports.playSong = playSong

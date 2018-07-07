@@ -1,4 +1,4 @@
-var alexa_api = require('./alexa-api')
+kvar alexa_api = require('./alexa-api')
 var express = require('express')
 var bodyParser = require('body-parser')
 var app = express()
@@ -6,7 +6,7 @@ const serverPort = 8091
 var savedConfig = {}
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-alexa_api.login(process.env.USER, process.env.PASS, function(error, response, config){
+alexa_api.login(process.env.USER, process.env.PASS, process.env.URL, function(error, response, config){
   savedConfig = config
   console.log(response)
   app.listen(serverPort, function () {
@@ -60,6 +60,8 @@ app.post('/alexa-setMedia', urlencodedParser, function (req, res) {
     res.send(response)
   })
 })
+
+
 
 
 
