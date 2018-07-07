@@ -1,5 +1,5 @@
 {
-  "name": "Alexa Meida Player API",
+  "name": "Alexa Media Player API",
   "version": "0.4",
   "slug": "alexaapi",
   "description": "API to communicate with alexa devices as media players",
