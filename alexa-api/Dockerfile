@@ -1,7 +1,5 @@
 FROM node:latest
-MAINTAINER Ivan Vanderbyl <ivan@flood.io>
-
-# Based on instructions at https://github.com/segmentio/nightmare/issues/224
+MAINTAINER Keaton Taylor <keatonstaylor@gmail.com>
 
 RUN apt-get update
 
@@ -26,8 +24,6 @@ RUN apt-get install -y \
   libxtst-dev \
   libxss1 \
   libnss3-dev \
-  gcc-multilib \
-  g++-multilib \
   jq
 
 ENV DEBUG="nightmare"
