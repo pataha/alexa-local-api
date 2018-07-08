@@ -3,7 +3,7 @@ var Nightmare = require('nightmare')
 var nightmare = Nightmare({ show: false })
 var dateFormat = require('dateformat')
 
-var login = function(userName, password, callback) {
+var login = function(userName, password, alexa_url, callback) {
   var devicesArray = []
   var cookiesArray = []
   var deviceSerialNumber
@@ -14,12 +14,12 @@ var login = function(userName, password, callback) {
   var config = {}
 
   nightmare
-    .goto('https://www.amazon.com/ap/signin?showRmrMe=1&openid.return_to=https%3A%2F%2Falexa.amazon.com%2Fspa%2Findex.html&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=amzn_dp_project_dee&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&')
+    .goto(alexa_url)
     .type('#ap_email', userName)
     .type('#ap_password', password)
     .click('#signInSubmit')
     .wait(1000)
-    .goto('https://alexa.amazon.com/api/devices-v2/device')
+    .goto(alexa_url + '/api/devices-v2/device')
     .wait()
     .evaluate(function() {
       return JSON.parse(document.body.innerText)
@@ -50,6 +50,7 @@ var login = function(userName, password, callback) {
       config.deviceSerialNumber = deviceSerialNumber
       config.deviceType = deviceType
       config.deviceOwnerCustomerId = deviceOwnerCustomerId
+      config.alexaURL = alexa_url
       callback(null, 'Logged in', config)
     })
     .catch(function(error) {
@@ -79,7 +80,7 @@ var setReminder = function(message, datetime, deviceSerialNumber, config, callba
 
     request({
       method: 'PUT',
-      url: 'https://alexa.amazon.com/api/notifications/createReminder',
+      url: config.alexaURL + '/api/notifications/createReminder',
       headers: {
         'Cookie': config.cookies,
         'csrf': config.csrf
@@ -122,7 +123,7 @@ var setTTS = function(message, deviceSerialNumber, config, callback) {
     })
     request({
       method: 'POST',
-      url: 'https://pitangui.amazon.com/api/behaviors/preview',
+      url: config.alexaURL + '/api/behaviors/preview',
       headers: {
         'Cookie': config.cookies,
         'csrf': config.csrf
@@ -146,34 +147,6 @@ var setTTS = function(message, deviceSerialNumber, config, callback) {
     })
 }
 
-var playSong = function(command, deviceSerialNumber, config, callback) {
-    var device = {}
-    config.devicesArray.devices.forEach(function(dev) {
-        if (dev.serialNumber === deviceSerialNumber){
-          device.deviceSerialNumber = dev.serialNumber
-          device.deviceType = dev.deviceType
-          device.deviceOwnerCustomerId = dev.deviceOwnerCustomerId
-        }
-    })
-    request({
-      method: 'POST',
-      url: 'https://pitangui.amazon.com/api/cloudplayer/queue-and-play?deviceSerialNumber=' +
-            device.deviceSerialNumber + '&deviceType=' + device.deviceType + '&mediaOwnerCustomerId=' +
-            device.device.deviceOwnerCustomerId,
-      headers: {
-        'Cookie': config.cookies,
-        'csrf': config.csrf
-      },
-      json: command
-    }, function(error, response, body) {
-      if(!error && response.statusCode === 200) {
-        callback(null, {"status": "success"})
-      } else {
-        callback(error, response)
-      }
-    })
-}
-
 var setMedia = function(command, deviceSerialNumber, config, callback) {
     var device = {}
     config.devicesArray.devices.forEach(function(dev) {
@@ -185,7 +158,7 @@ var setMedia = function(command, deviceSerialNumber, config, callback) {
     })
     request({
       method: 'POST',
-      url: 'https://pitangui.amazon.com/api/np/command?deviceSerialNumber=' +
+      url: config.alexaURL + '/api/np/command?deviceSerialNumber=' +
             device.deviceSerialNumber + '&deviceType=' + device.deviceType,
       headers: {
         'Cookie': config.cookies,
@@ -204,7 +177,7 @@ var setMedia = function(command, deviceSerialNumber, config, callback) {
 var getDevices = function(config, callback) {
       request({
       method: 'GET',
-      url: 'https://alexa.amazon.com/api/devices-v2/device',
+      url: config.alexaURL + '/api/devices-v2/device',
       headers: {
         'Cookie': config.cookies,
         'csrf': config.csrf
@@ -251,4 +224,3 @@ exports.setTTS = setTTS
 exports.setMedia = setMedia
 exports.getDevices = getDevices
 exports.getState = getState
-exports.playSong = playSong

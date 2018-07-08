@@ -32,24 +32,19 @@ RUN apt-get install -y \
 
 ENV DEBUG="nightmare"
 
-RUN npm install -g yarn
-RUN npm install nightmare
-
 RUN mkdir -p /workspace
 WORKDIR /workspace
 RUN mkdir ./tmp
 
 ADD package.json .
 
-RUN yarn install
+RUN npm install
 
 ADD . .
 
 EXPOSE 8091
 
-COPY entrypoint.sh /entrypoint
-RUN chmod +x /entrypoint
-ENTRYPOINT ["/entrypoint", "sh"]
+COPY run.sh /
+RUN chmod a+x /run.sh
 
-CMD ["run.sh"]
-
+CMD [ "/run.sh" ]

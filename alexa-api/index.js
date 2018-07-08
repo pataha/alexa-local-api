@@ -1,4 +1,4 @@
-kvar alexa_api = require('./alexa-api')
+var alexa_api = require('./alexa-api')
 var express = require('express')
 var bodyParser = require('body-parser')
 var app = express()
@@ -60,8 +60,6 @@ app.post('/alexa-setMedia', urlencodedParser, function (req, res) {
     res.send(response)
   })
 })
-
-
 
 
 
