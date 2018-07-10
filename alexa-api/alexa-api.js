@@ -235,7 +235,33 @@ var getBluetoothDevices = function(config, callback) {
     })
 }
 
+var setBluetoothDevice = function(mac, deviceSerialNumber, config, callback) {
+    var device = {}
+    config.devicesArray.devices.forEach(function(dev) {
+        if (dev.serialNumber === deviceSerialNumber){
+          device.deviceSerialNumber = dev.serialNumber
+          device.deviceType = dev.deviceType
+          device.deviceOwnerCustomerId = dev.deviceOwnerCustomerId
+        }
+    })
 
+
+    request({
+      method: 'POST',
+      url: config.alexaURL + '/api/bluetooth/pair-sink/'+ device.deviceType + '/' + device.deviceSerialNumber ,
+      headers: {
+        'Cookie': config.cookies,
+        'csrf': config.csrf
+      },
+      json: {bluetoothDeviceAddress: mac}
+    }, function(error, response, body) {
+      if(!error && response.statusCode === 200) {
+        callback(null, {"message": "success"})
+      } else {
+        callback(error, response)
+      }
+    })
+}
 
 exports.login = login
 exports.setReminder = setReminder
@@ -244,3 +270,4 @@ exports.setMedia = setMedia
 exports.getDevices = getDevices
 exports.getState = getState
 exports.getBluetoothDevices = getBluetoothDevices
+exports.setBluetoothDevice = setBluetoothDevice

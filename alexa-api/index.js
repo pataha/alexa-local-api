@@ -61,7 +61,14 @@ app.post('/alexa-setMedia', urlencodedParser, function (req, res) {
   })
 })
 
-
+app.post('/alexa-setBluetooth', urlencodedParser, function (req, res) {
+  var mac = req.body.mac;
+  var deviceSerialNumber = req.body.deviceSerialNumber;
+  console.log('got set bluetooth  message with mac: ' + mac + ' for device: ' + deviceSerialNumber)
+  alexa_api.setBluetoothDevice(mac, deviceSerialNumber, savedConfig, function(error, response){
+    res.send(response)
+  })
+})
 
 app.post('/alexa-getBluetooth', urlencodedParser, function (req, res) {
   console.log('got get bluetootha message')
