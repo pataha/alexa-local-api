@@ -218,9 +218,29 @@ var getState = function(deviceSerialNumber, config, callback) {
 }
 
 
+var getBluetoothDevices = function(config, callback) {
+    request({
+      method: 'GET',
+      url: config.alexaURL + '/api/bluetooth?cached=false',
+      headers: {
+        'Cookie': config.cookies,
+        'csrf': config.csrf
+      }
+    }, function(error, response, body) {
+      if(!error && response.statusCode === 200) {
+        callback(null, JSON.parse(body))
+      } else {
+        callback(error, response)
+      }
+    })
+}
+
+
+
 exports.login = login
 exports.setReminder = setReminder
 exports.setTTS = setTTS
 exports.setMedia = setMedia
 exports.getDevices = getDevices
 exports.getState = getState
+exports.getBluetoothDevices = getBluetoothDevices

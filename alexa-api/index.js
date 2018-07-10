@@ -63,3 +63,9 @@ app.post('/alexa-setMedia', urlencodedParser, function (req, res) {
 
 
 
+app.post('/alexa-getBluetooth', urlencodedParser, function (req, res) {
+  console.log('got get bluetootha message')
+  alexa_api.getBluetoothDevices(savedConfig, function(error, response){
+    res.send(response)
+  })
+})
