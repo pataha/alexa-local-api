@@ -76,3 +76,11 @@ app.post('/alexa-getBluetooth', urlencodedParser, function (req, res) {
     res.send(response)
   })
 })
+
+app.post('/alexa-disconnectBluetooth', urlencodedParser, function (req, res) {
+  var deviceSerialNumber = req.body.deviceSerialNumber;
+  console.log('got set bluetooth disconnect for device: ' + deviceSerialNumber)
+  alexa_api.disconnectBluetoothDevice(deviceSerialNumber, savedConfig, function(error, response){
+    res.send(response)
+  })
+})

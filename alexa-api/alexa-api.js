@@ -244,8 +244,6 @@ var setBluetoothDevice = function(mac, deviceSerialNumber, config, callback) {
           device.deviceOwnerCustomerId = dev.deviceOwnerCustomerId
         }
     })
-
-
     request({
       method: 'POST',
       url: config.alexaURL + '/api/bluetooth/pair-sink/'+ device.deviceType + '/' + device.deviceSerialNumber ,
@@ -263,6 +261,31 @@ var setBluetoothDevice = function(mac, deviceSerialNumber, config, callback) {
     })
 }
 
+var disconnectBluetoothDevice = function(deviceSerialNumber, config, callback) {
+    var device = {}
+    config.devicesArray.devices.forEach(function(dev) {
+        if (dev.serialNumber === deviceSerialNumber){
+          device.deviceSerialNumber = dev.serialNumber
+          device.deviceType = dev.deviceType
+          device.deviceOwnerCustomerId = dev.deviceOwnerCustomerId
+        }
+    })
+    request({
+      method: 'POST',
+      url: config.alexaURL + '/api/bluetooth/disconnect-sink/'+ device.deviceType + '/' + device.deviceSerialNumber ,
+      headers: {
+        'Cookie': config.cookies,
+        'csrf': config.csrf
+      },
+    }, function(error, response, body) {
+      if(!error && response.statusCode === 200) {
+        callback(null, {"message": "success"})
+      } else {
+        callback(error, response)
+      }
+    })
+}
+
 exports.login = login
 exports.setReminder = setReminder
 exports.setTTS = setTTS
@@ -271,3 +294,4 @@ exports.getDevices = getDevices
 exports.getState = getState
 exports.getBluetoothDevices = getBluetoothDevices
 exports.setBluetoothDevice = setBluetoothDevice
+exports.disconnectBluetoothDevice = disconnectBluetoothDevice
