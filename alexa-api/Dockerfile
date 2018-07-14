@@ -1,5 +1,5 @@
-FROM node:latest
-MAINTAINER Keaton Taylor <keatonstaylor@gmail.com>
+FROM node:10-slim
+MAINTAINER Hai Phan <hairbeos@gmail.com>
 
 RUN apt-get update
 
