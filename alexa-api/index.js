@@ -9,6 +9,9 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 alexa_api.login(process.env.USER, process.env.PASS, process.env.URL, function(error, response, config){
   savedConfig = config
   console.log(response)
+  if (error) {
+    console.error(error);
+  }
   app.listen(serverPort, function () {
     console.log('Internal endpoint:')
     console.log('curl -X POST -d "tts=Ask Alexa team for a proper TTS API" -d "deviceSerialNumber=deviceSerialNumber" ' + 'http://localhost:' + serverPort + '/alexa-tts')
