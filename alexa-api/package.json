@@ -6,7 +6,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "dateformat": "^3.0.2",
-    "nightmare": "^2.10.0",
+    "nightmare": "^3.0.1",
     "request": "^2.83.0"
   },
   "license": "MIT",
