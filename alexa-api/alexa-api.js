@@ -1,6 +1,11 @@
 var request = require('request')
 var Nightmare = require('nightmare')
-var nightmare = Nightmare({ show: false })
+var nightmare = Nightmare({ 
+  show: false,
+  switches: {
+    'ignore-certificate-errors': true
+  }
+})
 var dateFormat = require('dateformat')
 
 var login = function(userName, password, alexa_url, callback) {
