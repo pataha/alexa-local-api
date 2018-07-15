@@ -16,6 +16,7 @@ var login = function(userName, password, alexa_url, callback) {
   nightmare
     .goto(alexa_url)
     .wait('#ap_email')
+    .screenshot("/tmp/error.png")
     .type('#ap_email', userName)
     .type('#ap_password', password)
     .click('#signInSubmit')
